@@ -13,6 +13,7 @@ import classNames from 'classnames'
 const AppBar = memo(() => {
     const navigate = useNavigate()
     const [current, setCurrent] = useState(0)
+
     const APPBARDATA = [
         { name: "home", classname: "home", icon: <IconHome />, active: <IconHomeActive /> },
         { name: "search", classname: "search", icon: <IconSearch />, active: <IconSearhActive /> },

@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 export const AppBarWrapper = styled.div`
 display: flex;
-height: 100%;
+height: 70px;
+background: #000;
+/* height: 100%; */
 /* justify-content:center; */
 text-align: center;
 .home,.search,.library,.app{

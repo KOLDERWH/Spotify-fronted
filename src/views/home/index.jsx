@@ -35,7 +35,6 @@ const Home = memo((props) => {
                 </div>
             </div>
             {isShowSettingMenu && <SettingMenu setClickHandle={setClickHandle} />}
-            {/* <h2>Your top mixes</h2> */}
             <div className="content">
                 {homeInfo?.sectionContainer?.sections.items.map(item => {
                     return (
@@ -53,8 +52,6 @@ const Home = memo((props) => {
                                         return (albtemp && < Album albumPic={albtemp?.visuals.avatarImage.sources[0].url}
                                             albumName={albtemp?.profile.name} />)
                                     case "Episode":
-                                        console.log("Episode", albtemp?.name);
-                                        console.log(albtemp);
                                         return (albtemp && < Album albumPic={albtemp?.coverArt?.sources[2].url}
                                             albumName={albtemp?.name} />)
                                     default:
@@ -75,7 +72,6 @@ const Home = memo((props) => {
                     })}
                 </ScrollView> */}
             </div>
-
         </HomeWrapper >
     )
 })

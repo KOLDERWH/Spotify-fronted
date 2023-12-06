@@ -6,13 +6,20 @@ background: #333;
 height: 100%;
 
 color:#fff;
-.bar{
-    z-index:9;
-    background: #000;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 70px;
+>.App{
+    >.main{
+        overflow: hidden;
+    }
+    >.bar{
+        z-index:9;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        /* height: 70px; */
+    }
+}
+.iYxpxA,.iaCPPY,.kPpCsU{
+    fill: currentcolor;
 }
 
 `

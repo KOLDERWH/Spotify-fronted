@@ -26,6 +26,7 @@ color:#fff;
 }
 >.content{
     padding: 0 16px;
+    width: 100%;
     div{
         margin-bottom: 10px;
     }
