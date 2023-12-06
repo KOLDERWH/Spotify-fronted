@@ -1,19 +1,56 @@
 import PropTypes from 'prop-types'
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
+
 import { SearchWrapper } from './style'
 
+import SearchCard from '@/cpns/search-card'
+import IconSearch from "@/assets/svg/Icon-search.jsx"
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { fetchSearchDataAction } from '@/store/modules/search'
+import { Outlet, useNavigate } from 'react-router-dom'
+
 const Search = memo((props) => {
+    const dispatch = useDispatch()
+    const { pageInfo } = useSelector((state) => ({
+        pageInfo: state.search.pageInfo,
+    }), shallowEqual)
+
+    useEffect(() => {
+        dispatch(fetchSearchDataAction())
+    }, [dispatch])
+    const navigate = useNavigate()
     return (
         <SearchWrapper>
             <div className="title">
-                search
+                Search
             </div>
             <div className="search">
-                <input type="text" />
+                <div className="searchbox" onClick={e => navigate("/search/recent")}>
+                    <div className="icon">
+                        <IconSearch />
+                    </div>
+                    <div className="text">What do you want to listen to?</div>
+                </div>
             </div>
             <div className="borwse">
-                <div className="title">Browse all</div>
-
+                {/* {pageInfo.data.title.transformedLabel} */}
+                <div className="title">{pageInfo.data?.title.transformedLabel}</div>
+                <div className="cardlist">
+                    {pageInfo?.sectionItems?.items.map(item => {
+                        console.log(item);
+                        const tempCardinfo = item.content.data.data?.cardRepresentation || item.content.data
+                        return (
+                            <SearchCard
+                                key={item.uri}
+                                cardname={tempCardinfo.title.transformedLabel}
+                                cardcolor={tempCardinfo.backgroundColor.hex}
+                                cardurl={tempCardinfo.artwork.sources[0].url} />
+                        )
+                    })}
+                    {/* <SearchCard cardname="Music"
+                        cardcolor="#dc148c"
+                        cardurl="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb" /> */}
+                </div>
             </div>
         </SearchWrapper>
     )

@@ -26,6 +26,9 @@ color:#fff;
 }
 >.content{
     padding: 0 16px;
+    div{
+        margin-bottom: 10px;
+    }
 }
 .iYxpxA{
     fill: currentcolor;

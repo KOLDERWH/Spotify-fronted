@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types'
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import { HomeWrapper } from './style'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { fetchHomeDataAction } from '@/store/modules/home'
+
 import Album from '@/cpns/album'
 import IconSet from "@/assets/svg/Icon-set.jsx"
 import IconClose from "@/assets/svg/Icon-close.jsx"
@@ -12,10 +15,19 @@ const Home = memo((props) => {
     const setClickHandle = useCallback((value) => {
         setIsShowSet(value)
     }, [])
+
+    const { homeInfo } = useSelector((state) => ({
+        homeInfo: state.home.homeInfo,
+    }), shallowEqual)
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchHomeDataAction())
+    }, [dispatch])
     return (
         <HomeWrapper>
             <div className="top" >
-                <span>Good eveving</span>
+                <span>{homeInfo?.greeting?.transformedLabel}</span>
                 <div className="btn">
                     <div className="icon" onClick={e => setClickHandle(true)}>
                         <IconSet />
@@ -25,15 +37,46 @@ const Home = memo((props) => {
             {isShowSettingMenu && <SettingMenu setClickHandle={setClickHandle} />}
             {/* <h2>Your top mixes</h2> */}
             <div className="content">
-                <ScrollView title={"Your top mixes"}>
+                {homeInfo?.sectionContainer?.sections.items.map(item => {
+                    return (
+                        < ScrollView title={item.data.title?.transformedLabel || null} >
+                            {item.sectionItems.items.map(alb => {
+                                const albtemp = alb.content.data || null;
+                                switch (albtemp?.__typename) {
+                                    case "Album":
+                                        return (albtemp && < Album albumPic={albtemp?.coverArt?.sources[0].url}
+                                            albumName={albtemp?.name} />)
+                                    case "Playlist":
+                                        return (albtemp && < Album albumPic={albtemp?.images?.items[0].sources[0].url}
+                                            albumName={albtemp?.name} />)
+                                    case "Artist":
+                                        return (albtemp && < Album albumPic={albtemp?.visuals.avatarImage.sources[0].url}
+                                            albumName={albtemp?.profile.name} />)
+                                    case "Episode":
+                                        console.log("Episode", albtemp?.name);
+                                        console.log(albtemp);
+                                        return (albtemp && < Album albumPic={albtemp?.coverArt?.sources[2].url}
+                                            albumName={albtemp?.name} />)
+                                    default:
+                                        console.log(albtemp);
+                                        console.log("Other", albtemp?.name);
+                                        return
+                                }
+                            })
+                            }
+                        </ScrollView>
+
+                    )
+                })}
+                {/* <ScrollView title={"Your top mixes"}>
                     {[1, 2, 3].map(item => {
                         return <Album albumPic={"https://i.scdn.co/image/ab67616d00001e027f73af33f2b3848776728d2f"}
                             albumName={"I'm OK (Reimagined)"} />
                     })}
-                </ScrollView>
+                </ScrollView> */}
             </div>
 
-        </HomeWrapper>
+        </HomeWrapper >
     )
 })
 

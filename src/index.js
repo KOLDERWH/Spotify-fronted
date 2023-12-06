@@ -5,16 +5,21 @@ import { HashRouter } from 'react-router-dom';
 
 import "@/assets/css/index.css"
 import App from './App';
+import { Provider } from 'react-redux';
+import store from '@/store';
 // import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Suspense fallback="loading">
-    <React.StrictMode>
-      <HashRouter>
+    {/* <React.StrictMode> */}
+    <HashRouter>
+      <Provider store={store}>
         <App />
-      </HashRouter>
-    </React.StrictMode>
+
+      </Provider>
+    </HashRouter>
+    {/* </React.StrictMode> */}
   </Suspense>
 );
 

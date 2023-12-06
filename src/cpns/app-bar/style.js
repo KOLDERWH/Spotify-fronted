@@ -11,17 +11,20 @@ text-align: center;
     justify-content: center;
     /* align-items: center; */
     position: relative;
-    color:#fff;
+    color:#b3b3b3;
     margin: 10px;
     .text{
         position: absolute;
         bottom: 0;
     }
     .icon{
-        width: 32px;
+        width: 24px;
         .iYxpxA{
             fill: currentcolor;
         }
+    }
+    &.active{
+        color:#fff;
     }
 }
 

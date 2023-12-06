@@ -4,6 +4,7 @@ export const AlbumWrapper = styled.div`
 display: inline-block;
 box-sizing:border-box;
 padding: 8px;
+max-width: 168px;
 .picture{
     img{
         user-select:none;
@@ -17,5 +18,10 @@ padding: 8px;
     font-weight:500;
     /* font-size:16px; */
     margin-top: 10px;
+
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 `

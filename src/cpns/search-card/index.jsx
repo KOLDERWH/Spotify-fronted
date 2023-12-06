@@ -5,9 +5,11 @@ import { SearchCardWrapper } from './style'
 const SearchCard = memo((props) => {
     const { cardname, cardurl, cardcolor } = props;
     return (
-        <SearchCardWrapper>
-            <div>{cardname}</div>
-            <img src={cardurl} alt="" />
+        <SearchCardWrapper cardcolor={cardcolor}>
+            <div className="container">
+                <div className='name'>{cardname}</div>
+                <img className='picture' src={cardurl} alt="" />
+            </div>
         </SearchCardWrapper>
     )
 })
