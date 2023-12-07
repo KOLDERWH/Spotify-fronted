@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { memo, useCallback, useEffect, useState } from 'react'
+import { CSSTransition } from "react-transition-group"
 
 import { HomeWrapper } from './style'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
@@ -34,25 +35,35 @@ const Home = memo((props) => {
                     </div>
                 </div>
             </div>
-            {isShowSettingMenu && <SettingMenu setClickHandle={setClickHandle} />}
+            <CSSTransition in={isShowSettingMenu} unmountOnExit={true} className="animaSetting" timeout={200}>
+                <SettingMenu setClickHandle={setClickHandle} />
+            </CSSTransition>
             <div className="content">
                 {homeInfo?.sectionContainer?.sections.items.map(item => {
                     return (
-                        < ScrollView title={item.data.title?.transformedLabel || null} >
+                        < ScrollView key={item.uri} title={item.data.title?.transformedLabel || null} >
                             {item.sectionItems.items.map(alb => {
                                 const albtemp = alb.content.data || null;
                                 switch (albtemp?.__typename) {
                                     case "Album":
-                                        return (albtemp && < Album albumPic={albtemp?.coverArt?.sources[0].url}
+                                        // console.log(albtemp);
+                                        // console.log("Album", albtemp?.name);
+                                        return (albtemp && < Album albumPic={albtemp.coverArt?.sources[0].url}
                                             albumName={albtemp?.name} />)
                                     case "Playlist":
-                                        return (albtemp && < Album albumPic={albtemp?.images?.items[0].sources[0].url}
+                                        // console.log(albtemp);
+                                        // console.log("Playlist", albtemp?.name);
+                                        return (albtemp && < Album albumPic={albtemp.images?.items[0].sources[0].url}
                                             albumName={albtemp?.name} />)
                                     case "Artist":
-                                        return (albtemp && < Album albumPic={albtemp?.visuals.avatarImage.sources[0].url}
+                                        // console.log(albtemp);
+                                        // console.log("Artist", albtemp?.name);
+                                        return (albtemp && < Album albumPic={albtemp.visuals.avatarImage.sources[2].url}
                                             albumName={albtemp?.profile.name} />)
                                     case "Episode":
-                                        return (albtemp && < Album albumPic={albtemp?.coverArt?.sources[2].url}
+                                        // console.log(albtemp);
+                                        // console.log("Episode", albtemp?.name);
+                                        return (albtemp && < Album albumPic={albtemp.coverArt?.sources[1].url}
                                             albumName={albtemp?.name} />)
                                     default:
                                         console.log(albtemp);

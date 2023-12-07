@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const HomeWrapper = styled.div`
 color:#fff;
+overflow: auto;
 >.top{
     display: flex;
     justify-content: space-between;
@@ -68,5 +69,25 @@ color:#fff;
         }
     }
 
+}
+
+/* 动画 */
+.animaSetting-enter{
+    transform:translateX(100%);
+    opacity: 0;
+}
+.animaSetting-enter-active{
+    transform:translateX(0);
+    opacity: 1;
+    transition:all 200ms ease;
+}
+.animaSetting-exit{
+    transform:translateX(-100%);
+    opacity: 1;
+}
+.animaSetting-exit-active{
+    transform:translateX(0);
+    opacity: 0;
+    transition:all 200ms ease;
 }
 `

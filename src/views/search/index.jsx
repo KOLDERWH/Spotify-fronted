@@ -37,7 +37,7 @@ const Search = memo((props) => {
                 <div className="title">{pageInfo.data?.title.transformedLabel}</div>
                 <div className="cardlist">
                     {pageInfo?.sectionItems?.items.map(item => {
-                        console.log(item);
+                        // console.log(item);
                         const tempCardinfo = item.content.data.data?.cardRepresentation || item.content.data
                         return (
                             <SearchCard

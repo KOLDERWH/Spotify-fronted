@@ -10,6 +10,7 @@ max-width: 168px;
         user-select:none;
         border-radius:4px;
         width: 152px;
+        background: #999;
     }
 }
 .text{

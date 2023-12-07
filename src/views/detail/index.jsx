@@ -58,6 +58,14 @@ const Detail = memo((props) => {
                             relname="THE REMIXES"
                             reltime="Latest Relaase Album"
                         />
+                        <Release relpic="https://i.scdn.co/image/ab67616d0000485185567802f7f91610875b2669"
+                            relname="THE REMIXES"
+                            reltime="Latest Relaase Album"
+                        />
+                        <Release relpic="https://i.scdn.co/image/ab67616d0000485185567802f7f91610875b2669"
+                            relname="THE REMIXES"
+                            reltime="Latest Relaase Album"
+                        />
                     </div>
                 </div>
                 <div className="albums">
