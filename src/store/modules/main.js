@@ -6,7 +6,7 @@ export const fetchMainDataAction = createAsyncThunk("fetchMainDAtaAction", (payl
         dispatch(changeTract(res.data.tracks[0]));
         dispatch(changeIsShowPlayer(true));
 
-        console.log(res.data.tracks[0]);
+        // console.log(res.data.tracks[0]);
     }).catch(err => {
         console.log(err);
     })

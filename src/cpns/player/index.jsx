@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { SwitchTransition, CSSTransition } from 'react-transition-group'
 import { PlayerWrapper } from './style'
@@ -64,7 +63,7 @@ const Player = memo((props) => {
             // 将音乐当前播放时间格式化为分钟和秒，并在HTML中显示出来
             setCurrenttime(formatTime(musicEle.current.currentTime))
         }, 600), false);
-    }, [musicEle.current, dispatch])
+    }, [])
 
     // 计算音乐总时长和播放结束时的操作
     useEffect(() => {
@@ -104,7 +103,7 @@ const Player = memo((props) => {
 
     const seekChangeHandle = useCallback((e) => {
         musicEle.current.currentTime = e.target.value;
-    }, [musicEle.current])
+    }, [])
 
     return (
         <PlayerWrapper>
@@ -176,8 +175,6 @@ const Player = memo((props) => {
         </PlayerWrapper>
     )
 })
-
-Player.propTypes = {}
 
 const FullPlayer = memo((props) => {
     const { downClick, isPlaying,

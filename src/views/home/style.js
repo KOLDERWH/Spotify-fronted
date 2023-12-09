@@ -82,11 +82,11 @@ overflow: auto;
     transition:all 200ms ease;
 }
 .animaSetting-exit{
-    transform:translateX(-100%);
+    transform:translateX(0);
     opacity: 1;
 }
 .animaSetting-exit-active{
-    transform:translateX(0);
+    transform:translateX(100%);
     opacity: 0;
     transition:all 200ms ease;
 }

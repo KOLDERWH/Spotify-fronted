@@ -5,6 +5,7 @@ display: inline-block;
 box-sizing:border-box;
 padding: 8px;
 max-width: 168px;
+cursor: pointer;
 .picture{
     img{
         user-select:none;

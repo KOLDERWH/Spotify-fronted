@@ -4,6 +4,8 @@ export const SearchRecentWrapper = styled.div`
 height: 100vh;
 background: #111;
 padding: 16px;
+overflow:auto;
+margin-bottom:100px;
 >.top{
     position: relative;
     >.back{
@@ -44,6 +46,8 @@ padding: 16px;
     }
 }
 >.content{
+    /* overflow:auto; */
+    /* height: 100%; */
     margin-top: 30px;
     .tip{
         font-weight: 700;

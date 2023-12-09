@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { memo, useEffect } from 'react'
 
 import { SearchWrapper } from './style'
@@ -7,7 +6,7 @@ import SearchCard from '@/cpns/search-card'
 import IconSearch from "@/assets/svg/Icon-search.jsx"
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { fetchSearchDataAction } from '@/store/modules/search'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Search = memo((props) => {
     const dispatch = useDispatch()
@@ -21,9 +20,7 @@ const Search = memo((props) => {
     const navigate = useNavigate()
     return (
         <SearchWrapper>
-            <div className="title">
-                Search
-            </div>
+            <div className="title">Search</div>
             <div className="search">
                 <div className="searchbox" onClick={e => navigate("/search/recent")}>
                     <div className="icon">
@@ -39,23 +36,16 @@ const Search = memo((props) => {
                     {pageInfo?.sectionItems?.items.map(item => {
                         // console.log(item);
                         const tempCardinfo = item.content.data.data?.cardRepresentation || item.content.data
-                        return (
-                            <SearchCard
-                                key={item.uri}
-                                cardname={tempCardinfo.title.transformedLabel}
-                                cardcolor={tempCardinfo.backgroundColor.hex}
-                                cardurl={tempCardinfo.artwork.sources[0].url} />
-                        )
+                        return (<SearchCard
+                            key={item.uri}
+                            cardname={tempCardinfo.title.transformedLabel}
+                            cardcolor={tempCardinfo.backgroundColor.hex}
+                            cardurl={tempCardinfo.artwork.sources[0].url} />)
                     })}
-                    {/* <SearchCard cardname="Music"
-                        cardcolor="#dc148c"
-                        cardurl="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb" /> */}
                 </div>
             </div>
         </SearchWrapper>
     )
 })
-
-Search.propTypes = {}
 
 export default Search
