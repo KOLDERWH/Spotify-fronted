@@ -23,15 +23,16 @@ import formatTime from '@/hook/useFormatTime'
 const Player = memo((props) => {
     const [isShowfullplayer, setIsshowfullplayer] = useState(false)
 
-    const [process, setProcess] = useState(0)
-    const [maxvalue, setMaxvalue] = useState(100)
+    // const [process, setProcess] = useState(0)
+    // const [maxvalue, setMaxvalue] = useState(100)
     //播放器
     const musicEle = useRef()
     const seekbarEle = useRef()
 
     //音乐的时间
-    const [currenttime, setCurrenttime] = useState("0:0")
-    const [totalTime, setTotalTime] = useState("1:0")
+    const [musictime, setMusictime] = useState({now:"00:00", total:"01:00"})
+    //音乐的时间
+    const [process, setProcess] = useState({process:0, max:100})
 
     // 轨道信息，是否显示全屏播放器
     const { isPlaying, isLoved, tractInfo, isShowPlayer } = useSelector((state) => ({
@@ -54,29 +55,36 @@ const Player = memo((props) => {
 
     // 进度条和播放时间
     useEffect(() => {
-        // 当音乐当前播放时间更新时
-        musicEle.current && (musicEle.current.addEventListener("timeupdate", throttle(() => {
-            setProcess(musicEle.current.currentTime)
-        }, 500)))
 
+        // 当音乐当前播放时间更新时
         musicEle.current && musicEle.current.addEventListener('timeupdate', throttle(() => {
             // 将音乐当前播放时间格式化为分钟和秒，并在HTML中显示出来
-            setCurrenttime(formatTime(musicEle.current.currentTime))
+            const nowdate = {...musictime,now:formatTime(musicEle.current.currentTime)}
+            setMusictime(nowdate)
+
+            const nowProcess = {...process,process:formatTime(musicEle.current.currentTime)}
+            setProcess(nowProcess)
+            // setProcess(musicEle.current.currentTime)
         }, 600), false);
-    }, [])
+    }, [musictime])
 
     // 计算音乐总时长和播放结束时的操作
     useEffect(() => {
         musicEle.current && seekbarEle.current && (musicEle.current.onloadeddata = () => {
+            
             // 设置进度条最大值为音乐总时长
-            setMaxvalue(musicEle.current.duration)
-            setTotalTime(formatTime(musicEle.current.duration))
+            const maxProcess = {...process,max:formatTime(musicEle.current.duration)}
+            setProcess( maxProcess)
+            //设置总时长
+            const totaldate = {...musictime,total:formatTime(musicEle.current.duration)}
+            setMusictime(totaldate)
         })
 
         //播放结束
         musicEle.current && musicEle.current.addEventListener('ended', () => {
             setProcess(0)
-            setCurrenttime("0:0")
+            const nowdate = {...musictime,now:"0:0"}
+            setMusictime(nowdate)
             dispatch(changeIsPlay(!isPlaying));
         });
     })
@@ -159,13 +167,7 @@ const Player = memo((props) => {
                     unmountOnExit={true}
                     classNames="fullplayer" timeout={200}>
                     <FullPlayer
-                        process={process}
-                        currenttime={currenttime}
-                        totalTime={totalTime}
-                        maxvalue={maxvalue}
-                        tractInfo={tractInfo}
-                        isPlaying={isPlaying}
-                        isLoved={isLoved}
+                        musicInfo={{process,musictime,maxvalue,isPlaying,isLoved,tractInfo}}
                         downClick={downClick}
                         seekChangeHandle={seekChangeHandle}
                         swtichHandle={swtichHandle} />
@@ -176,13 +178,9 @@ const Player = memo((props) => {
     )
 })
 
-const FullPlayer = memo((props) => {
-    const { downClick, isPlaying,
-        isLoved, swtichHandle,
-        currenttime, totalTime,
-        tractInfo, maxvalue,
-        process, seekChangeHandle } = props;
-    // 隐藏滚动条
+const FullPlayer = memo(({ downClick,swtichHandle,musicInfo,seekChangeHandle }) => {
+    console.log(musicInfo);
+        // 隐藏滚动条
     useEffect(() => {
         document.body.style.overflow = "hidden";
         return () => {
@@ -204,16 +202,16 @@ const FullPlayer = memo((props) => {
             {/* 音乐图片和播放按钮 */}
             <div className="content">
                 <div className="pic">
-                    <img src={tractInfo?.album?.images[1].url} alt="" />
+                    <img src={musicInfo.tractInfo?.album?.images[1].url} alt="" />
                 </div>
                 <div className="container">
                     <div className="top">
-                        <div className="name">{tractInfo?.name}</div>
-                        <div className="author">{tractInfo?.artists?.[0].name}</div>
+                        <div className="name">{musicInfo.tractInfo?.name}</div>
+                        <div className="author">{musicInfo.tractInfo?.artists?.[0].name}</div>
                         <div className="icon" onClick={e => swtichHandle(e, "love")}>
                             <SwitchTransition mode='out-in'>
-                                <CSSTransition key={isLoved ? "loved" : "love"} classNames="animaSwitch" timeout={200}>
-                                    {isLoved ? <IconLoved /> : <IconLove />}
+                                <CSSTransition key={musicInfo.isLoved ? "loved" : "love"} classNames="animaSwitch" timeout={200}>
+                                    {musicInfo.isLoved ? <IconLoved /> : <IconLove />}
                                 </CSSTransition>
                             </SwitchTransition>
                         </div>
@@ -222,11 +220,11 @@ const FullPlayer = memo((props) => {
                         <input type="range"
                             onChange={e => seekChangeHandle(e)}
                             class="seekbar"
-                            step="1" value={process}
-                            min="0" max={maxvalue} />
+                            step="1" value={musicInfo.process}
+                            min="0" max={musicInfo.maxvalue} />
                         <div className="playtime">
-                            <span class="current-time">{currenttime}</span>
-                            <span class="duration">{totalTime}</span>
+                            <span class="current-time">{musicInfo.musictime.now}</span>
+                            <span class="duration">{musicInfo.musictime.total}</span>
                         </div>
                     </div>
                     <div className="button">
@@ -238,8 +236,8 @@ const FullPlayer = memo((props) => {
                         </div>
                         <div className="play-pause" onClick={e => swtichHandle(e, "play")}>
                             <SwitchTransition mode='out-in'>
-                                <CSSTransition key={isPlaying ? "yes" : "no"} classNames="animaSwitch" timeout={200}>
-                                    {isPlaying ? <IconPause /> : <IconPlay />}
+                                <CSSTransition key={musicInfo.isPlaying ? "yes" : "no"} classNames="animaSwitch" timeout={200}>
+                                    {musicInfo.isPlaying ? <IconPause /> : <IconPlay />}
                                 </CSSTransition>
                             </SwitchTransition>
                         </div>

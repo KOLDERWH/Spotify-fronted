@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { SearchRecentWrapper } from './style'
 import IconBack from "@/assets/svg/Icon-back.jsx"
 import IconSearch from "@/assets/svg/Icon-search.jsx"
