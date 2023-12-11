@@ -16,22 +16,19 @@ import IconShareV1 from "@/assets/svg/Icon-share-1.jsx"
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { changeIsLove, changeIsPlay, fetchMainDataAction } from '@/store/modules/main'
 
-import throttle from "@/hook/throttle.js"
+import throttle from "@/hook/throttle.ts"
 import formatTime from '@/hook/useFormatTime'
 
 //player
 const Player = memo((props) => {
     const [isShowfullplayer, setIsshowfullplayer] = useState(false)
-
-    // const [process, setProcess] = useState(0)
-    // const [maxvalue, setMaxvalue] = useState(100)
     //播放器
     const musicEle = useRef()
     const seekbarEle = useRef()
 
-    //音乐的时间
+    //播放时间
     const [musictime, setMusictime] = useState({now:"00:00", total:"01:00"})
-    //音乐的时间
+    //播放进度
     const [process, setProcess] = useState({process:0, max:100})
 
     // 轨道信息，是否显示全屏播放器
@@ -53,18 +50,16 @@ const Player = memo((props) => {
         dispatch(fetchMainDataAction())
     }, [dispatch])
 
-    // 进度条和播放时间
+    // 进度和播放时间
     useEffect(() => {
-
         // 当音乐当前播放时间更新时
         musicEle.current && musicEle.current.addEventListener('timeupdate', throttle(() => {
-            // 将音乐当前播放时间格式化为分钟和秒，并在HTML中显示出来
+            // 将音乐当前播放时间
             const nowdate = {...musictime,now:formatTime(musicEle.current.currentTime)}
             setMusictime(nowdate)
-
-            const nowProcess = {...process,process:formatTime(musicEle.current.currentTime)}
+            // 设置播放进度
+            const nowProcess = {...process,process:musicEle.current.currentTime}
             setProcess(nowProcess)
-            // setProcess(musicEle.current.currentTime)
         }, 600), false);
     }, [musictime])
 
@@ -73,7 +68,7 @@ const Player = memo((props) => {
         musicEle.current && seekbarEle.current && (musicEle.current.onloadeddata = () => {
             
             // 设置进度条最大值为音乐总时长
-            const maxProcess = {...process,max:formatTime(musicEle.current.duration)}
+            const maxProcess = {...process,max:musicEle.current.duration}
             setProcess( maxProcess)
             //设置总时长
             const totaldate = {...musictime,total:formatTime(musicEle.current.duration)}
@@ -157,9 +152,9 @@ const Player = memo((props) => {
                         <input type="range"
                             ref={seekbarEle}
                             // onChange={e => seekChangeHandle(e)}
-                            class="seekbar"
-                            step="1" value={process}
-                            min="0" max={maxvalue} />
+                            className="seekbar"
+                            step="1" value={process.process}
+                            min="0" max={process.max} />
                     </div>
                 </div>
                 <CSSTransition
@@ -167,7 +162,7 @@ const Player = memo((props) => {
                     unmountOnExit={true}
                     classNames="fullplayer" timeout={200}>
                     <FullPlayer
-                        musicInfo={{process,musictime,maxvalue,isPlaying,isLoved,tractInfo}}
+                        musicInfo={{process,musictime,isPlaying,isLoved,tractInfo}}
                         downClick={downClick}
                         seekChangeHandle={seekChangeHandle}
                         swtichHandle={swtichHandle} />
@@ -179,8 +174,7 @@ const Player = memo((props) => {
 })
 
 const FullPlayer = memo(({ downClick,swtichHandle,musicInfo,seekChangeHandle }) => {
-    console.log(musicInfo);
-        // 隐藏滚动条
+    // 隐藏滚动条
     useEffect(() => {
         document.body.style.overflow = "hidden";
         return () => {
@@ -194,7 +188,7 @@ const FullPlayer = memo(({ downClick,swtichHandle,musicInfo,seekChangeHandle }) 
                 <div className="down" onClick={downClick}>
                     <IconDown />
                 </div>
-                <div className="author">{tractInfo?.name}</div>
+                <div className="author">{musicInfo.tractInfo?.name}</div>
                 <div className="more">
                     <IconMore />
                 </div>
@@ -219,12 +213,12 @@ const FullPlayer = memo(({ downClick,swtichHandle,musicInfo,seekChangeHandle }) 
                     <div className="control">
                         <input type="range"
                             onChange={e => seekChangeHandle(e)}
-                            class="seekbar"
-                            step="1" value={musicInfo.process}
-                            min="0" max={musicInfo.maxvalue} />
+                            className="seekbar"
+                            step="1" value={musicInfo.process.process}
+                            min="0" max={musicInfo.process.max} />
                         <div className="playtime">
-                            <span class="current-time">{musicInfo.musictime.now}</span>
-                            <span class="duration">{musicInfo.musictime.total}</span>
+                            <span className="current-time">{musicInfo.musictime.now}</span>
+                            <span className="duration">{musicInfo.musictime.total}</span>
                         </div>
                     </div>
                     <div className="button">

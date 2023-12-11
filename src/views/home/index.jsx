@@ -46,26 +46,26 @@ const Home = memo((props) => {
                                 case "Album":
                                     // console.log(albtemp);
                                     // console.log("Album", albtemp?.name);
-                                    return (albtemp && < Album albumPic={albtemp.coverArt?.sources[0].url}
+                                    return (albtemp && < Album key={albtemp.uri} albumPic={albtemp.coverArt?.sources[0].url}
                                         albumName={albtemp?.name} />)
                                 case "Playlist":
                                     // console.log(albtemp);
                                     // console.log("Playlist", albtemp?.name);
-                                    return (albtemp && < Album albumPic={albtemp.images?.items[0].sources[0].url}
+                                    return (albtemp && < Album key={albtemp.uri} albumPic={albtemp.images?.items[0].sources[0].url}
                                         albumName={albtemp?.name} />)
                                 case "Artist":
                                     // console.log(albtemp);
                                     // console.log("Artist", albtemp?.name);
-                                    return (albtemp && < Album albumPic={albtemp.visuals.avatarImage.sources[2].url}
+                                    return (albtemp && < Album key={albtemp.uri} albumPic={albtemp.visuals.avatarImage.sources[2].url}
                                         albumName={albtemp?.profile.name} />)
                                 case "Episode":
                                     // console.log(albtemp);
                                     // console.log("Episode", albtemp?.name);
-                                    return (albtemp && < Album albumPic={albtemp.coverArt?.sources[1].url}
+                                    return (albtemp && < Album key={albtemp.uri} albumPic={albtemp.coverArt?.sources[1].url}
                                         albumName={albtemp?.name} />)
                                 default:
-                                    console.log(albtemp);
-                                    console.log("Other", albtemp?.name);
+                                    // console.log(albtemp);
+                                    // console.log("Other", albtemp?.name);
                                     return null
                             }
                         })

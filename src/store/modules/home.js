@@ -4,7 +4,7 @@ import SpotifyRequest from "@/service"
 export const fetchHomeDataAction = createAsyncThunk("fetchHomeDAtaAction", (payload, { dispatch }) => {
     SpotifyRequest.get({ url: "/home.json" }).then(res => {
         dispatch(changeHome(res.data.data.home))
-        console.log(res.data.data.home);
+        // console.log(res.data.data.home);
     }).catch(err => {
         console.log(err);
     })
